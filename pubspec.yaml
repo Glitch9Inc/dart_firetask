@@ -1,0 +1,17 @@
+name: dart_firetask
+description: A sample command-line application.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.5.0
+
+# Add regular dependencies here.
+dependencies:
+  cloud_firestore: ^5.0.1
+  flutter_corelib: 
+    path: ../flutter_corelib
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0

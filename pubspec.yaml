@@ -1,8 +1,14 @@
 name: dart_firetask
 description: A sample command-line application.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
+homepage: https://github.com/Glitch9Inc/dart_firetask
+repository: https://github.com/Glitch9Inc/dart_firetask
+issue_tracker: https://github.com/Glitch9Inc/dart_firetask/issues
+documentation: https://github.com/Glitch9Inc/dart_firetask#readme
+
+version: 1.0.0
+ 
 environment:
   sdk: ^3.5.0
 

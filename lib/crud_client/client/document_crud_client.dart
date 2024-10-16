@@ -1,12 +1,12 @@
 import 'package:flutter_corelib/flutter_corelib.dart';
 import 'package:dart_firetask/dart_firetask.dart';
 
-abstract class DocumentCrudController<TModel extends CrudModelMixin,
-    TSelf extends DocumentCrudController<TModel, TSelf>> extends BaseFirestoreCrudController<TModel, dynamic, TSelf> {
+abstract class DocumentCrudClient<TModel extends CrudModelMixin, TSelf extends DocumentCrudClient<TModel, TSelf>>
+    extends BaseFirestoreCrudClient<TModel, dynamic, TSelf> {
   final CacheMap<String, TModel> cache = CacheMap<String, TModel>();
   final String documentName;
 
-  DocumentCrudController(CollectionReference collectionReference, {required this.documentName})
+  DocumentCrudClient(CollectionReference collectionReference, {required this.documentName})
       : super(collectionReference, FirestoreDataType.field);
 
   @override

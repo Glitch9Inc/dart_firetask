@@ -3,13 +3,12 @@ import 'package:dart_firetask/dart_firetask.dart';
 
 /// Mainly used for data that is stored in Firestore in a date-based manner
 /// such as daily history data or monthly statistics data.
-abstract class DateBasedDocumentCrudController<TModel extends DailyDto<TModel>,
-        TSelf extends DateBasedDocumentCrudController<TModel, TSelf>>
-    extends BaseFirestoreCrudController<TModel, Date, TSelf> {
+abstract class DateBasedDocumentCrudClient<TModel extends DailyDto<TModel>,
+    TSelf extends DateBasedDocumentCrudClient<TModel, TSelf>> extends BaseFirestoreCrudClient<TModel, Date, TSelf> {
   final DateBasedCacheMap<String, TModel> cache;
   final String dataName;
 
-  DateBasedDocumentCrudController(CollectionReference collectionReference, {required this.dataName})
+  DateBasedDocumentCrudClient(CollectionReference collectionReference, {required this.dataName})
       : cache = DateBasedCacheMap<String, TModel>(dataName: dataName),
         super(collectionReference, FirestoreDataType.field);
 

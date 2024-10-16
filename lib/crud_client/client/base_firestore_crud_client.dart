@@ -1,13 +1,13 @@
 import 'package:dart_firetask/dart_firetask.dart';
 import 'package:flutter_corelib/flutter_corelib.dart';
 
-abstract class BaseFirestoreCrudController<TModel extends CrudModelMixin, TArg,
-    TSelf extends BaseFirestoreCrudController<TModel, TArg, TSelf>> extends BaseCrudController<TModel, TArg, TSelf> {
+abstract class BaseFirestoreCrudClient<TModel extends CrudModelMixin, TArg,
+    TSelf extends BaseFirestoreCrudClient<TModel, TArg, TSelf>> extends BaseCrudClient<TModel, TArg, TSelf> {
   final CollectionReference collectionReference;
   final Logger logger;
   final FirestoreDataType dataType;
 
-  BaseFirestoreCrudController(this.collectionReference, this.dataType) : logger = Logger(TSelf.toString());
+  BaseFirestoreCrudClient(this.collectionReference, this.dataType) : logger = Logger(TSelf.toString());
 
   // override these methods in the concrete class
   DocumentReference getDocument(String id, {TArg? arg});

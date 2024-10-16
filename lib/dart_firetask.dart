@@ -5,16 +5,16 @@ export 'firetask/firetask.dart';
 export 'firetask/firetask_batch.dart';
 
 // crud
-export 'firestore_crud/firestore_crud.dart';
+export 'crud_client/firestore_crud.dart';
 
-export 'firestore_crud/controller/base_firestore_crud_controller.dart';
-export 'firestore_crud/controller/collection_crud_controller.dart';
-export 'firestore_crud/controller/document_crud_controller.dart';
-export 'firestore_crud/controller/date_based_document_crud_controller.dart';
+export 'crud_client/client/base_firestore_crud_client.dart';
+export 'crud_client/client/collection_crud_client.dart';
+export 'crud_client/client/document_crud_client.dart';
+export 'crud_client/client/date_based_document_crud_client.dart';
 
-export 'firestore_crud/exception/crud_operation_exception_base.dart';
-export 'firestore_crud/exception/crud_operation_exception_type.dart';
-export 'firestore_crud/exception/document_snapshot_exception.dart';
+export 'crud_client/exception/crud_operation_exception_base.dart';
+export 'crud_client/exception/crud_operation_exception_type.dart';
+export 'crud_client/exception/document_snapshot_exception.dart';
 
 // utils
 export 'utils/firestore_data_type.dart';

@@ -1,6 +1,6 @@
-# Firetask: Firestore CRUD Controller Module
+# Firetask: Firestore CRUD Client Module
 
-This module provides a set of controllers designed to simplify **CRUD (Create, Read, Update, Delete)** operations in Firebase Firestore. It enables a structured approach for managing Firestore documents and collections, offering reusable components for various document-based data handling requirements.
+This module provides a set of clients designed to simplify **CRUD (Create, Read, Update, Delete)** operations in Firebase Firestore. It enables a structured approach for managing Firestore documents and collections, offering reusable components for various document-based data handling requirements.
 
 ## Key Features
 

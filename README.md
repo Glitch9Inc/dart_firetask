@@ -1,50 +1,53 @@
-# Firetask: Firestore CRUD Client Module
+# dart_firetask
 
-This module provides a set of clients designed to simplify **CRUD (Create, Read, Update, Delete)** operations in Firebase Firestore. It enables a structured approach for managing Firestore documents and collections, offering reusable components for various document-based data handling requirements.
+Shared Firestore CRUD, batch, and transaction adapters for Glitch9 Dart and
+Flutter projects.
 
-## Key Features
+## FireTask v2 write semantics
 
-### 1. **Base Firestore CRUD Client**
-   - A generic base class that abstracts common Firestore operations, reducing boilerplate code for interacting with Firestore documents.
-   - Handles CRUD operations efficiently for different Firestore collections.
-   - Customizable for specific collection structures.
+- `create`: creates/replaces the target with the initial model.
+- `replace`: full-document replacement.
+- `patch`: Firestore `update` for selected fields.
+- `delete`: removes the target.
+- `update`: legacy-compatible alias for `replace`.
 
-### 2. **Collection CRUD Client**
-   - Extends the base client to manage Firestore collections with a focus on batch operations and collection-level interactions.
-   - Allows for scalable handling of large datasets and multiple document operations.
+Batch effects such as timestamps and cache changes run only after the server
+commit succeeds. A failed commit leaves FireTask-managed cache state unchanged.
+A `FireBatch` is single-use and rejects new tasks after commit.
 
-### 3. **Date-based Document CRUD Client**
-   - A specialized client for managing documents organized by dates, such as task scheduling, event logs, or time-based data records.
-   - Ensures optimized queries and retrieval for date-based filtering.
+Create batches through the owning client when composing operations:
 
-### 4. **Document CRUD Client**
-   - Focuses on managing single Firestore documents, providing granular control over individual data points.
-   - Handles operations such as retrieving, updating, and deleting specific documents.
+```dart
+final batch = client.createBatch();
+await client.batchPatch(model, batch: batch);
+await batch.commit();
+```
 
-### 5. **Firetask and Firetask Batch**
-   - A task management system built on Firestore, allowing for complex task execution and batch operations.
-   - Supports transactional operations and ensures data consistency across multiple tasks.
+This keeps the batch bound to the client's injected `FirebaseFirestore`
+instance, including emulator and secondary-app instances.
 
-### 6. **Firestore Data Type Handling**
-   - Contains utility functions for handling and validating Firestore data types, ensuring that data types used in the database are consistent with Firestore’s requirements.
+Use `FireTransactionRunner` when reads and writes must be concurrency-safe:
 
-### 7. **Firestore Validator**
-   - Provides validation utilities for Firestore documents, ensuring that data meets predefined rules before being saved or updated.
-   - Helps maintain data integrity within the Firestore collections.
+```dart
+final runner = FireTransactionRunner(firestore: firestore);
+await runner.run((transaction) async {
+  final snapshot = await transaction.get(reference);
+  transaction.update(reference, {'count': snapshot.get('count') + 1});
+});
+```
 
-## Benefits
-- **Modular Design**: The clients are modular, allowing you to extend or customize them to meet specific project needs.
-- **Code Reusability**: Eliminates redundant code by providing common functions for Firestore interactions.
-- **Scalable Operations**: Supports batch processing and large-scale Firestore document management.
-- **Optimized for Date-based Data**: The date-based controller is perfect for applications that need time-sensitive or chronologically structured data.
+## Cache policy
 
-## Usage
-To use any of these controllers, simply import the respective Dart files into your project and extend or customize them as needed. These clients offer a flexible way to manage Firestore data without rewriting CRUD operations for each Firestore collection.
+- Successful direct and batch writes update the cache.
+- Failed writes do not update it.
+- `invalidateCache(id)` removes one cached value.
+- `refresh(id)` invalidates and reads it again.
+- `clearCache()` clears all cached and negative-cached values.
 
-## Installation
-1. Add the relevant Dart files to your Flutter project.
-2. Ensure your project has the `cloud_firestore` dependency installed.
+## Legacy map documents
 
-```yaml
-dependencies:
-  cloud_firestore: ^3.1.5
+`FirestoreMapClient` remains available for migration and compatibility with
+schemas that store many records inside one Firestore document. New domains
+should use one Firestore document per record. Map entries cannot be queried or
+patched reliably at arbitrary nested field paths, and large shared documents
+remain subject to Firestore size and contention limits.

@@ -1,17 +1,20 @@
 enum FirestoreDataType {
-  document,
-  field,
+  /// Each data is stored in a single document
+  singleDocument,
+
+  /// Each data is stored in a map in a document
+  mapInDocument,
 }
 
 extension FirestoreDataTypeExtension on FirestoreDataType {
   String getName({bool firstLetter = false}) {
     String name = '';
     switch (this) {
-      case FirestoreDataType.document:
-        name = 'document';
+      case FirestoreDataType.singleDocument:
+        name = 'single document';
         break;
-      case FirestoreDataType.field:
-        name = 'field';
+      case FirestoreDataType.mapInDocument:
+        name = 'map in document';
         break;
     }
 

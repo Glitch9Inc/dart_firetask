@@ -1,6 +1,6 @@
+import 'package:dart_corelib/dart_corelib.dart';
 import 'package:dart_firetask/dart_firetask.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flutter_corelib/flutter_corelib.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 

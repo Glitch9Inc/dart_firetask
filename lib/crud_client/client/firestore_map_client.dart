@@ -1,5 +1,5 @@
+import 'package:dart_corelib/dart_corelib.dart';
 import 'package:dart_firetask/dart_firetask.dart';
-import 'package:flutter_corelib/flutter_corelib.dart';
 
 /// Legacy storage strategy that keeps multiple records in one document.
 ///

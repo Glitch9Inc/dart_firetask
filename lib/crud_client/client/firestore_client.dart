@@ -1,7 +1,7 @@
+import 'package:dart_corelib/dart_corelib.dart';
 import 'package:dart_firetask/crud_client/logger/firestore_client_logger.dart';
 import 'package:dart_firetask/dart_firetask.dart';
 import 'package:dart_firetask/utils/firestore_converter.dart';
-import 'package:flutter_corelib/flutter_corelib.dart';
 
 class FirestoreClient<TModel extends ServerModel>
     with ServerModelClient<TModel, FireBatch> {

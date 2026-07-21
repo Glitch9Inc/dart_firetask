@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dart_corelib/dart_corelib.dart';
 import 'package:dart_firetask/models/firetask.dart';
 import 'package:dart_firetask/models/firestore_data_type.dart';
-import 'package:flutter_corelib/flutter_corelib.dart';
 
 class FireBatch {
   final FirebaseFirestore firestore;

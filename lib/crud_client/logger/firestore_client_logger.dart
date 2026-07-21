@@ -1,4 +1,4 @@
-import 'package:flutter_corelib/flutter_corelib.dart';
+import 'package:logging/logging.dart';
 
 class FirestoreClientLogger {
   late final Logger _logger;
@@ -8,7 +8,9 @@ class FirestoreClientLogger {
   FirestoreClientLogger(
       {required String className, required String firestoreDataType}) {
     _logger = Logger(className);
-    _firestoreDataTypeCap = firestoreDataType.capitalizeFirst!;
+    _firestoreDataTypeCap = firestoreDataType.isEmpty
+        ? firestoreDataType
+        : '${firestoreDataType[0].toUpperCase()}${firestoreDataType.substring(1)}';
     _firestoreDataType = firestoreDataType;
   }
 

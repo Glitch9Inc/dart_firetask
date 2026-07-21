@@ -15,8 +15,9 @@ environment:
 # Add regular dependencies here.
 dependencies:
   cloud_firestore: ^5.0.1
-  flutter_corelib:
-    path: ../g9_flutter_corelib
+  dart_corelib:
+    path: ../g9_dart_corelib
+  logging: ^1.3.0
 
 dev_dependencies:
   fake_cloud_firestore: ^3.0.0

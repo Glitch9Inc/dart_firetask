@@ -184,6 +184,57 @@ class FirestoreClient<TModel extends ServerModel>
     return model;
   }
 
+  /// 캐시 우선 조회 (stale-while-revalidate).
+  ///
+  /// Firestore SDK의 디스크 캐시(오프라인 퍼시스턴스, 모바일 기본 ON)에서
+  /// 즉시 읽어 반환하고, 서버 최신본은 백그라운드로 받아 [onRefreshed]로
+  /// 전달한다. 디스크 캐시가 없으면(첫 실행 등) 기존 [retrieve] 경로로
+  /// 넘어가 서버에서 읽는다.
+  ///
+  /// 주의: 반환값은 마지막으로 이 기기에서 본 데이터다. 다른 기기에서
+  /// 바꾼 값은 [onRefreshed]가 도착할 때까지 반영되지 않으므로, stale이
+  /// 허용되지 않는 문서는 [retrieve]를 그대로 쓸 것.
+  Future<TModel?> retrieveCacheFirst(
+    String id, {
+    void Function(TModel fresh)? onRefreshed,
+  }) async {
+    _requireId(id, 'retrieveCacheFirst');
+
+    if (cache.isCached(id)) {
+      return retrieve(id);
+    }
+
+    DocumentSnapshot<Object?>? snapshot;
+    try {
+      snapshot =
+          await getDocument(id).get(const GetOptions(source: Source.cache));
+    } catch (_) {
+      // 디스크 캐시 미스는 예외로 떨어진다 — 서버 경로로 폴백.
+      snapshot = null;
+    }
+
+    if (snapshot == null || !snapshot.exists || snapshot.data() == null) {
+      return retrieve(id);
+    }
+
+    logger.onCacheFound(id);
+    final cached = await retrieveInternal(id, snapshot);
+    if (cached == null) {
+      return retrieve(id);
+    }
+
+    // 서버 최신본으로 백그라운드 갱신. 실패(오프라인 등)해도 캐시로 동작.
+    getDocument(id).get().then((fresh) async {
+      if (!fresh.exists) return;
+      final model = await retrieveInternal(id, fresh);
+      if (model != null) onRefreshed?.call(model);
+    }).catchError((Object error) {
+      logger.warning('Background refresh failed for $id: $error');
+    });
+
+    return cached;
+  }
+
   @override
   Future<void> delete(String id) async {
     _requireId(id, 'delete');
